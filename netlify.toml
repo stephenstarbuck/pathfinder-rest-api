@@ -1,0 +1,8 @@
+[functions]
+  node_bundler = "esbuild"
+
+# Optional: prettier URL alias for the function
+[[redirects]]
+  from = "/api/pathfinder"
+  to = "/.netlify/functions/pathfinder-hook"
+  status = 200
