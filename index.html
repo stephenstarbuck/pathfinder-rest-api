@@ -77,35 +77,40 @@
       <pre id="output">Waiting for data…</pre>
     </div>
 
-    <script>
-      async function load() {
-        const output = document.getElementById("output");
-        const meta = document.getElementById("meta");
+<script>
+  async function load() {
+    const output = document.getElementById("output");
+    const meta = document.getElementById("meta");
 
-        output.textContent = "Loading…";
+    try {
+      const res = await fetch("/.netlify/functions/pathfinder-hook");
+      const data = await res.json();
 
-        try {
-          const res = await fetch("/.netlify/functions/pathfinder-hook");
-          const data = await res.json();
-
-          if (data.error) {
-            meta.textContent = "";
-            output.textContent = data.error;
-            return;
-          }
-
-          meta.textContent = data.receivedAt
-            ? "Last received: " + new Date(data.receivedAt).toLocaleString()
-            : "";
-
-          output.textContent = JSON.stringify(data, null, 2);
-        } catch (err) {
-          output.textContent = "Error: " + err;
-        }
+      if (data.error) {
+        meta.textContent = "";
+        output.textContent = data.error;
+        return;
       }
 
-      document.getElementById("refresh").addEventListener("click", load);
-      load();
-    </script>
+      meta.textContent = data.receivedAt
+        ? "Last received: " + new Date(data.receivedAt).toLocaleString()
+        : "";
+
+      // SHOW ONLY rawBody
+      output.textContent = data.rawBody || "No rawBody found.";
+    } catch (err) {
+      output.textContent = "Error: " + err;
+    }
+  }
+
+  document.getElementById("refresh").addEventListener("click", load);
+
+  // Auto-refresh every 10 seconds
+  setInterval(load, 10000);
+
+  // Initial load
+  load();
+</script>
+
   </body>
 </html>
