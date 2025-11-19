@@ -27,6 +27,22 @@
         gap: 0.75rem;
       }
 
+      button {
+        padding: 0.45rem 1rem;
+        border-radius: 999px;
+        border: 1px solid #d1d5db;
+        background: #f3f4f6;
+        color: #111827;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background 0.15s, border-color 0.15s;
+      }
+
+      button:hover {
+        background: #e5e7eb;
+        border-color: #cbd5e1;
+      }
+
       .stack {
         max-width: 900px;
         margin: 0 auto;
@@ -74,6 +90,7 @@
     <div class="top-bar">
       <div>
         <h1>CapRadio News</h1>
+        <button id="refresh">Refresh now</button>
       </div>
     </div>
 
@@ -111,6 +128,7 @@
     <div class="top-bar">
       <div>
         <h1 style="margin-top: 1.5rem">CapRadio Music</h1>
+        <button id="refresh">Refresh now</button>
       </div>
     </div>
       
@@ -152,6 +170,7 @@
     <div class="top-bar">
       <div style="margin-top: 1.5rem">
         <h1>Streaming</h1>
+        <button id="refresh">Refresh now</button>
       </div>
     </div>
       
