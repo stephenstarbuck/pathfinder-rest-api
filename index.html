@@ -220,51 +220,45 @@
     <script>
       const CARD_COUNT = 13;
 
-async function loadSlot(slot) {
-  const output = document.getElementById("output-" + slot);
-  const meta = document.getElementById("meta-" + slot);
-  if (!output || !meta) return;
+      async function loadSlot(slot) {
+        const output = document.getElementById("output-" + slot);
+        const meta = document.getElementById("meta-" + slot);
 
-  try {
-    const res = await fetch(
-      "/.netlify/functions/pathfinder-hook?slot=" + slot
-    );
-    const data = await res.json();
+        try {
+          const res = await fetch(
+            "/.netlify/functions/pathfinder-hook?slot=" + slot
+          );
+          const data = await res.json();
 
-    if (data.error) {
-      meta.textContent = "Last Updated: —";
-      output.textContent = data.error;
-      output.classList.remove("status-green", "status-red");
-      return;
-    }
+          if (data.error) {
+            meta.textContent = "Last Updated: —";
+            output.textContent = data.error;
+            return;
+          }
 
-    meta.textContent = data.receivedAt
-      ? "Last Updated: " + new Date(data.receivedAt).toLocaleString()
-      : "Last Updated: —";
+          meta.textContent = data.receivedAt
+            ? "Last Updated: " + new Date(data.receivedAt).toLocaleString()
+            : "Last Updated: —";
 
-    // show ONLY rawBody
-    const text = data.rawBody || "No rawBody found.";
-    output.textContent = text;
+          output.textContent = data.rawBody || "No rawBody found.";
+        } catch (err) {
+          output.textContent = "Error: " + err;
+        }
+      }
 
-    // remove old state
-    output.classList.remove("status-green", "status-red");
+      function loadAll() {
+        for (let slot = 1; slot <= CARD_COUNT; slot++) {
+          loadSlot(slot);
+        }
+      }
 
-    // apply new color state
-    const upper = text.toUpperCase();
+      document.getElementById("refresh").addEventListener("click", loadAll);
 
-    if (upper.includes("ON AIR")) {
-      output.classList.add("status-green");
-    } else if (upper.includes("OFF THE AIR")) {
-      output.classList.add("status-red");
-    }
+      // Auto-refresh every 10 seconds
+      setInterval(loadAll, 10000);
 
-  } catch (err) {
-    meta.textContent = "Last Updated: —";
-    output.textContent = "Error: " + err;
-    output.classList.remove("status-green", "status-red");
-  }
-}
-
+      // Initial load
+      loadAll();
     </script>
   </body>
 </html>
