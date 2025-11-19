@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Pathfinder REST Monitor</title>
+    <title>CapRadio Signal Status</title>
 
     <style>
       body {
@@ -90,16 +90,13 @@
   <body>
     <div class="top-bar">
       <div>
-        <h1>Pathfinder REST Monitor</h1>
-        <div style="font-size:0.85rem; color:#6b7280;">
-          10 channels • Auto-refresh every 10 seconds
-        </div>
+        <h1>CapRadio Signal Status</h1>
       </div>
       <button id="refresh">Refresh now</button>
     </div>
 
     <div class="stack">
-      <!-- 10 vertical cards -->
+      <!-- 13 vertical cards -->
       <!-- You can rename card titles anytime -->
       <!-- Slot 1 -->
       <div class="card">
@@ -170,10 +167,32 @@
         <div class="card-meta" id="meta-10">Last Updated: —</div>
         <pre id="output-10">Waiting for data…</pre>
       </div>
+      
+      <!-- Slot 11 -->
+      <div class="card">
+        <div class="card-title">Slot 11</div>
+        <div class="card-meta" id="meta-11">Last Updated: —</div>
+        <pre id="output-11">Waiting for data…</pre>
+      </div>
+      
+      <!-- Slot 12 -->
+      <div class="card">
+        <div class="card-title">Slot 12</div>
+        <div class="card-meta" id="meta-12">Last Updated: —</div>
+        <pre id="output-12">Waiting for data…</pre>
+      </div>
+      
+      <!-- Slot 13 -->
+      <div class="card">
+        <div class="card-title">Slot 13</div>
+        <div class="card-meta" id="meta-10">Last Updated: —</div>
+        <pre id="output-13">Waiting for data…</pre>
+      </div>
+      
     </div>
 
     <script>
-      const CARD_COUNT = 10;
+      const CARD_COUNT = 13;
 
       async function loadSlot(slot) {
         const output = document.getElementById("output-" + slot);
