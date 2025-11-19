@@ -1,12 +1,12 @@
 import { getStore } from "@netlify/blobs";
 
-/**
- * Netlify Function:
- * - POST from Pathfinder: store latest payload
- * - GET from browser: return latest payload as JSON
- */
 export default async (req, context) => {
   const store = getStore("pathfinder-commands");
+
+  // Read ?slot=1..10 (default to "1" if missing)
+  const url = new URL(req.url);
+  const slot = url.searchParams.get("slot") || "1";
+  const key = `slot-${slot}`; // 🔑 each slot has its own key
 
   if (req.method === "POST") {
     const bodyText = await req.text();
@@ -15,29 +15,28 @@ export default async (req, context) => {
     try {
       parsed = JSON.parse(bodyText);
     } catch {
-      // Pathfinder might send plain text, that’s fine
+      // it's fine if not JSON, we still store rawBody
     }
 
     const payload = {
       receivedAt: new Date().toISOString(),
       rawBody: bodyText,
-      json: parsed,
-      headers: Object.fromEntries(req.headers),
-      path: req.url,
-      method: req.method
+      json: parsed
     };
 
-    await store.setJSON("latest", payload);
+    // 🔐 store per-slot
+    await store.setJSON(key, payload);
 
     return new Response("OK", { status: 200 });
   }
 
   if (req.method === "GET") {
-    const latest = await store.get("latest", { type: "json" });
+    // 🔍 read per-slot
+    const latest = await store.get(key, { type: "json" });
 
     return new Response(
       JSON.stringify(
-        latest || { error: "No Pathfinder POST received yet." },
+        latest || { error: `No data yet for slot ${slot}.` },
         null,
         2
       ),
