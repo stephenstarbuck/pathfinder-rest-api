@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>CapRadio Signal Status</title>
+    <title>Pathfinder REST Monitor</title>
 
     <style>
       body {
@@ -15,51 +15,16 @@
 
       h1 {
         margin: 0 0 0.75rem 0;
-        font-size: 1.45rem;
+        font-size: 1.6rem;
         font-weight: 600;
       }
 
       .top-bar {
-        max-width: 1100px;
+        max-width: 900px;
         margin: 0 auto 1.5rem auto;
         display: flex;
         align-items: center;
         gap: 0.75rem;
-      }
-
-      .grid {
-        max-width: 1100px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 1rem;
-      }
-
-      .card {
-        background: #ffffff;
-        border-radius: 0.75rem;
-        padding: 1rem;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-        border: 1px solid #e5e7eb;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        margin-bottom: 0.35rem;
-      }
-
-      .card-title {
-        font-size: 0.95rem;
-        font-weight: 600;
-      }
-
-      .card-meta {
-        font-size: 0.75rem;
-        color: #6b7280;
       }
 
       button {
@@ -78,24 +43,46 @@
         border-color: #cbd5e1;
       }
 
+      .stack {
+        max-width: 900px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+      }
+
+      .card {
+        background: #ffffff;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e5e7eb;
+      }
+
+      .card-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.35rem;
+      }
+
+      .card-meta {
+        font-size: 0.8rem;
+        color: #6b7280;
+        margin-bottom: 0.75rem;
+      }
+
       pre {
-        margin: 0.35rem 0 0 0;
+        margin: 0;
         background: #f3f4f6;
         border-radius: 0.5rem;
-        padding: 0.5rem;
+        padding: 1rem;
         overflow: auto;
-        font-size: 0.8rem;
+        font-size: 0.9rem;
         line-height: 1.35;
         border: 1px solid #e5e7eb;
         white-space: pre-wrap;
         word-wrap: break-word;
         min-height: 3rem;
-      }
-
-      .updated-badge {
-        font-size: 0.7rem;
-        color: #16a34a;
-        margin-left: 0.25rem;
       }
     </style>
   </head>
@@ -104,142 +91,93 @@
     <div class="top-bar">
       <div>
         <h1>Pathfinder REST Monitor</h1>
+        <div style="font-size:0.85rem; color:#6b7280;">
+          10 channels • Auto-refresh every 10 seconds
+        </div>
       </div>
       <button id="refresh">Refresh now</button>
     </div>
 
-    <div class="grid">
-      <!-- 10 cards, one per slot -->
-      <!-- You can rename titles to whatever each Pathfinder event is -->
-      <!-- Card 1 -->
+    <div class="stack">
+      <!-- 10 vertical cards -->
+      <!-- You can rename card titles anytime -->
+      <!-- Slot 1 -->
       <div class="card">
-        <div class="card-header">
-          <div class="card-title">90.9 FM Sacramento KXJZ</div>
-          <div class="card-meta" id="meta-1"></div>
-        </div>
+        <div class="card-title">Slot 1</div>
+        <div class="card-meta" id="meta-1">Last Updated: —</div>
         <pre id="output-1">Waiting for data…</pre>
       </div>
 
-      <!-- Card 2 -->
+      <!-- Slot 2 -->
       <div class="card">
-        <div class="card-header">
-          <div class="card-title">90.5 FM Tahoe/Reno KKTO</div>
-          <div class="card-meta" id="meta-2"></div>
-        </div>
+        <div class="card-title">Slot 2</div>
+        <div class="card-meta" id="meta-2">Last Updated: —</div>
         <pre id="output-2">Waiting for data…</pre>
       </div>
 
-      <!-- Card 3 -->
+      <!-- Slot 3 -->
       <div class="card">
-        <div class="card-header">
-          <div class="card-title">91.3 FM Stockton/Modesto KUOP</div>
-          <div class="card-meta" id="meta-3"></div>
-        </div>
+        <div class="card-title">Slot 3</div>
+        <div class="card-meta" id="meta-3">Last Updated: —</div>
         <pre id="output-3">Waiting for data…</pre>
       </div>
 
-      <!-- Card 4 -->
+      <!-- Slot 4 -->
       <div class="card">
-        <div class="card-header">
-          <div class="card-title">88.1 FM Quincy KQNC</div>
-          <div class="card-meta" id="meta-4"></div>
-        </div>
+        <div class="card-title">Slot 4</div>
+        <div class="card-meta" id="meta-4">Last Updated: —</div>
         <pre id="output-4">Waiting for data…</pre>
       </div>
 
-      <!-- Card 5 -->
+      <!-- Slot 5 -->
       <div class="card">
-        <div class="card-header">
-          <div class="card-title">88.9 FM Sacramento KXPR</div>
-          <div class="card-meta" id="meta-5"></div>
-        </div>
+        <div class="card-title">Slot 5</div>
+        <div class="card-meta" id="meta-5">Last Updated: —</div>
         <pre id="output-5">Waiting for data…</pre>
       </div>
 
-      <!-- Card 6 -->
+      <!-- Slot 6 -->
       <div class="card">
-        <div class="card-header">
-          <div class="card-title">91.7 FM Groveland/Sonora KXSR</div>
-          <div class="card-meta" id="meta-6"></div>
-        </div>
+        <div class="card-title">Slot 6</div>
+        <div class="card-meta" id="meta-6">Last Updated: —</div>
         <pre id="output-6">Waiting for data…</pre>
       </div>
 
-      <!-- Card 7 -->
+      <!-- Slot 7 -->
       <div class="card">
-        <div class="card-header">
-          <div class="card-title">88.7 FM Sutter/Yuba City KXJS</div>
-          <div class="card-meta" id="meta-7"></div>
-        </div>
+        <div class="card-title">Slot 7</div>
+        <div class="card-meta" id="meta-7">Last Updated: —</div>
         <pre id="output-7">Waiting for data…</pre>
       </div>
 
-      <!-- Card 8 -->
+      <!-- Slot 8 -->
       <div class="card">
-        <div class="card-header">
-          <div class="card-title">Translator South Lake Tahoe K201AJ</div>
-          <div class="card-meta" id="meta-8"></div>
-        </div>
+        <div class="card-title">Slot 8</div>
+        <div class="card-meta" id="meta-8">Last Updated: —</div>
         <pre id="output-8">Waiting for data…</pre>
       </div>
 
-      <!-- Card 9 -->
+      <!-- Slot 9 -->
       <div class="card">
-        <div class="card-header">
-          <div class="card-title">Translator South Lake Tahoe K211EF</div>
-          <div class="card-meta" id="meta-9"></div>
-        </div>
+        <div class="card-title">Slot 9</div>
+        <div class="card-meta" id="meta-9">Last Updated: —</div>
         <pre id="output-9">Waiting for data…</pre>
       </div>
 
-      <!-- Card 10 -->
+      <!-- Slot 10 -->
       <div class="card">
-        <div class="card-header">
-          <div class="card-title">News Station Stream</div>
-          <div class="card-meta" id="meta-10"></div>
-        </div>
+        <div class="card-title">Slot 10</div>
+        <div class="card-meta" id="meta-10">Last Updated: —</div>
         <pre id="output-10">Waiting for data…</pre>
       </div>
-      
-      <!-- Card 11 -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">Music Station Stream</div>
-          <div class="card-meta" id="meta-11"></div>
-        </div>
-        <pre id="output-11">Waiting for data…</pre>
-      </div>
-            
-      <!-- Card 12 -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">ClassicalStream</div>
-          <div class="card-meta" id="meta-12"></div>
-        </div>
-        <pre id="output-12">Waiting for data…</pre>
-      </div>
-    </div>
-                
-      <!-- Card 13 -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">JazzStream</div>
-          <div class="card-meta" id="meta-13"></div>
-        </div>
-        <pre id="output-13">Waiting for data…</pre>
-      </div>
-    </div>
-    
     </div>
 
     <script>
-      const CARD_COUNT = 13;
+      const CARD_COUNT = 10;
 
       async function loadSlot(slot) {
         const output = document.getElementById("output-" + slot);
         const meta = document.getElementById("meta-" + slot);
-
-        if (!output || !meta) return;
 
         try {
           const res = await fetch(
@@ -248,23 +186,22 @@
           const data = await res.json();
 
           if (data.error) {
-            meta.textContent = "";
+            meta.textContent = "Last Updated: —";
             output.textContent = data.error;
             return;
           }
 
           meta.textContent = data.receivedAt
-            ? new Date(data.receivedAt).toLocaleTimeString()
-            : "";
+            ? "Last Updated: " + new Date(data.receivedAt).toLocaleString()
+            : "Last Updated: —";
 
-          // Only show rawBody
           output.textContent = data.rawBody || "No rawBody found.";
         } catch (err) {
           output.textContent = "Error: " + err;
         }
       }
 
-      async function loadAll() {
+      function loadAll() {
         for (let slot = 1; slot <= CARD_COUNT; slot++) {
           loadSlot(slot);
         }
