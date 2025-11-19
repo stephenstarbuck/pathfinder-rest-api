@@ -83,6 +83,19 @@
         white-space: pre-wrap;
         word-wrap: break-word;
       }
+
+  .status-green {
+        background: #d1fae5 !important; /* green-100 */
+        border-color: #10b981 !important; /* green-500 */
+        color: #064e3b !important; /* green-900 */
+}
+
+  .status-red {
+  background: #fee2e2 !important; /* red-100 */
+  border-color: #ef4444 !important; /* red-500 */
+  color: #7f1d1d !important; /* red-900 */
+}
+
     </style>
   </head>
 
@@ -207,45 +220,51 @@
     <script>
       const CARD_COUNT = 13;
 
-      async function loadSlot(slot) {
-        const output = document.getElementById("output-" + slot);
-        const meta = document.getElementById("meta-" + slot);
+async function loadSlot(slot) {
+  const output = document.getElementById("output-" + slot);
+  const meta = document.getElementById("meta-" + slot);
+  if (!output || !meta) return;
 
-        try {
-          const res = await fetch(
-            "/.netlify/functions/pathfinder-hook?slot=" + slot
-          );
-          const data = await res.json();
+  try {
+    const res = await fetch(
+      "/.netlify/functions/pathfinder-hook?slot=" + slot
+    );
+    const data = await res.json();
 
-          if (data.error) {
-            meta.textContent = "Last Updated: —";
-            output.textContent = data.error;
-            return;
-          }
+    if (data.error) {
+      meta.textContent = "Last Updated: —";
+      output.textContent = data.error;
+      output.classList.remove("status-green", "status-red");
+      return;
+    }
 
-          meta.textContent = data.receivedAt
-            ? "Last Updated: " + new Date(data.receivedAt).toLocaleString()
-            : "Last Updated: —";
+    meta.textContent = data.receivedAt
+      ? "Last Updated: " + new Date(data.receivedAt).toLocaleString()
+      : "Last Updated: —";
 
-          output.textContent = data.rawBody || "No rawBody found.";
-        } catch (err) {
-          output.textContent = "Error: " + err;
-        }
-      }
+    // show ONLY rawBody
+    const text = data.rawBody || "No rawBody found.";
+    output.textContent = text;
 
-      function loadAll() {
-        for (let slot = 1; slot <= CARD_COUNT; slot++) {
-          loadSlot(slot);
-        }
-      }
+    // remove old state
+    output.classList.remove("status-green", "status-red");
 
-      document.getElementById("refresh").addEventListener("click", loadAll);
+    // apply new color state
+    const upper = text.toUpperCase();
 
-      // Auto-refresh every 10 seconds
-      setInterval(loadAll, 10000);
+    if (upper.includes("ON AIR")) {
+      output.classList.add("status-green");
+    } else if (upper.includes("OFF THE AIR")) {
+      output.classList.add("status-red");
+    }
 
-      // Initial load
-      loadAll();
+  } catch (err) {
+    meta.textContent = "Last Updated: —";
+    output.textContent = "Error: " + err;
+    output.classList.remove("status-green", "status-red");
+  }
+}
+
     </script>
   </body>
 </html>
